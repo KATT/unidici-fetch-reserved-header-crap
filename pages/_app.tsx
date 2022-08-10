@@ -5,6 +5,7 @@ import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
+import { omit } from "../utils/omit";
 
 const MyApp: AppType = ({
   Component,
@@ -45,7 +46,7 @@ export default withTRPC<AppRouter>({
         if (ctx?.req) {
           // on ssr, forward client's headers to the server
           return {
-            ...ctx.req.headers,
+            ...omit(ctx.req.headers, "connection"),
             "x-ssr": "1",
           };
         }
